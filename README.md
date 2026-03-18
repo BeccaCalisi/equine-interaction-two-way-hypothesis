@@ -2,7 +2,7 @@
 
 This repository contains the de-identified dataset and reproducible analysis script for:
 
-[Paper title here]
+Animal Engagement Shapes Human Emotional Responses In Human–Animal Interactions: A Test of the Two-Way Hypothesis
 
 ## Files
 - `equine_interaction_reproducible_analysis.py`: main analysis script
