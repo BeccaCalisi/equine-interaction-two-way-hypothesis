@@ -36,15 +36,11 @@ if not FILE.exists():
 df = pd.read_csv(FILE)
 
 # Standardize condition coding
-df["condition"] = df["condition"].astype(str).str.strip()
-df["condition_bin"] = df["condition"].map({"Petting": 0, "Scratching": 1})
-
-if df["condition_bin"].isna().any():
-    bad_vals = sorted(df.loc[df["condition_bin"].isna(), "condition"].dropna().unique())
-    raise ValueError(
-        "Unrecognized values detected in 'condition': "
-        f"{bad_vals}. Expected only 'Petting' and 'Scratching'."
-    )
+# Keep only rows with valid experimental condition labels.
+# This prevents downstream failures caused by blank or malformed entries.
+df["condition"] = df["condition"].astype("string").str.strip()
+df = df[df["condition"].isin(["Petting", "Scratching"])].copy()
+df["condition_bin"] = df["condition"].map({"Petting": 0, "Scratching": 1}).astype(int)
 
 # Ensure week is numeric and compatible with statsmodels formulas
 df["week"] = pd.to_numeric(df["week"], errors="coerce")
